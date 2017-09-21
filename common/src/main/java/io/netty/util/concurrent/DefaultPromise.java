@@ -2,7 +2,6 @@ package io.netty.util.concurrent;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 

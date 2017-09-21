@@ -36,6 +36,32 @@ public abstract class ConstantPool<T extends Constant<T>> {
         return constant;
     }
 
+    /**
+     * Returns {@code true} if a {@link AttributeKey} exists for the given {@code name}
+     */
+    public boolean exists(String name) {
+        checkNotNullAndNotEmpty(name);
+        return constants.containsKey(name);
+    }
+
+    public T newInstance(String name) {
+        checkNotNullAndNotEmpty(name);
+        return createOrThrow(name);
+    }
+
+    private T createOrThrow(String name) {
+        T constant = constants.get(name);
+        if (constant == null) {
+            final T tempConstant = newConstant(nextId(), name);
+            constant = constants.putIfAbsent(name, tempConstant);
+            if (constant == null) {
+                return tempConstant;
+            }
+        }
+
+        throw new IllegalArgumentException(String.format("'%s' is already in use", name));
+    }
+
     private static String checkNotNullAndNotEmpty(String name) {
         Objects.requireNonNull(name);
 
